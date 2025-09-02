@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MYSHEROS - 質感女裝購物</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Audio player -->
+    <audio id="bg-music"></audio>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <nav class="nav">
+                <div class="nav__brand">
+                    <h1 class="brand-logo">MYSHEROS</h1>
+                </div>
+                <ul class="nav__menu">
+                    <li><a href="#home" class="nav__link">首頁</a></li>
+                    <li><a href="#products" class="nav__link">商品</a></li>
+                    <li><a href="#lookbook" class="nav__link">穿搭靈感</a></li>
+                    <li><a href="#quiz" class="nav__link">風格測驗</a></li>
+                </ul>
+                <div class="nav__actions">
+                    <button class="btn btn--outline" id="music-btn">
+                        ▶️
+                    </button>
+                    <button class="btn btn--outline btn--sm" id="cart-btn">
+                        購物車 (<span id="cart-count">0</span>)
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="hero__slider">
+                <div class="hero__slide active" data-slide="0">
+                    <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=1200&h=600&fit=crop" alt="2025春夏新品上市">
+                    <div class="hero__content">
+                        <h2>2025春夏新品上市</h2>
+                        <p>簡約優雅，展現妳的品味</p>
+                        <button class="btn btn--primary btn--lg">立即選購</button>
+                    </div>
+                </div>
+                <div class="hero__slide" data-slide="1">
+                    <img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=1200&h=600&fit=crop" alt="質感服飾特惠">
+                    <div class="hero__content">
+                        <h2>質感服飾特惠</h2>
+                        <p>精選商品限時優惠中</p>
+                        <button class="btn btn--primary btn--lg">搶購優惠</button>
+                    </div>
+                </div>
+            </div>
+            <div class="hero__nav">
+                <button class="hero__nav-btn active" data-slide="0"></button>
+                <button class="hero__nav-btn" data-slide="1"></button>
+            </div>
+        </section>
+
+        <!-- Categories -->
+        <section class="categories">
+            <div class="container">
+                <h2 class="section-title">商品分類</h2>
+                <div class="categories__grid">
+                    <div class="category-item">
+                        <div class="category-card" data-category="上衣">
+                           <img src="01.jpeg" alt="上衣" class="category-card__image">
+                        </div>
+                        <h3>上衣</h3>
+                        <span class="category-card__count">4 件商品</span>
+                    </div>
+                    <div class="category-item">
+                        <div class="category-card" data-category="褲子">
+                             <img src="02.jpeg" alt="褲子" class="category-card__image">
+                        </div>
+                        <h3>褲子</h3>
+                        <span class="category-card__count">2 件商品</span>
+                    </div>
+                    <div class="category-item">
+                        <div class="category-card" data-category="洋裝">
+                             <img src="03.png" alt="洋裝" class="category-card__image">
+                        </div>
+                        <h3>洋裝</h3>
+                        <span class="category-card__count">即將上架</span>
+                    </div>
+                    <div class="category-item">
+                        <div class="category-card" data-category="外套">
+                             <img src="04.jpeg" alt="外套" class="category-card__image">
+                        </div>
+                        <h3>外套</h3>
+                        <span class="category-card__count">即將上架</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- New Products -->
+        <section class="new-products">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">最新商品</h2>
+                    <button class="btn btn--outline" id="view-all-new">查看全部</button>
+                </div>
+                <div class="products-grid" id="new-products-grid">
+                    <!-- Products will be inserted here by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Hot Products -->
+        <section class="hot-products">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">熱銷商品</h2>
+                    <button class="btn btn--outline" id="view-all-hot">查看全部</button>
+                </div>
+                <div class="products-grid" id="hot-products-grid">
+                    <!-- Products will be inserted here by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section id="products" class="products">
+            <div class="container">
+                <div class="products__header">
+                    <h2 class="section-title">全部商品</h2>
+                    <div class="products__filters">
+                        <select class="form-control" id="category-filter">
+                            <option value="">所有分類</option>
+                            <option value="上衣">上衣</option>
+                            <option value="褲子">褲子</option>
+                        </select>
+                        <select class="form-control" id="color-filter">
+                            <option value="">所有顏色</option>
+                            <option value="藍色">藍色</option>
+                            <option value="粉色">粉色</option>
+                            <option value="黑色">黑色</option>
+                            <option value="白色">白色</option>
+                            <option value="條紋">條紋</option>
+                        </select>
+                        <select class="form-control" id="sort-filter">
+                            <option value="default">預設排序</option>
+                            <option value="price-low">價格：低到高</option>
+                            <option value="price-high">價格：高到低</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="products-grid" id="products-grid">
+                    <!-- Products will be inserted here by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Lookbook Section -->
+        <section id="lookbook" class="lookbook">
+            <div class="container">
+                <h2 class="section-title">穿搭靈感</h2>
+                <p class="section-subtitle">點擊圖片中的商品標籤，直接購買單品</p>
+                <div class="lookbook__grid" id="lookbook-grid">
+                    <!-- Lookbook items will be inserted here by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Style Quiz Section -->
+        <section id="quiz" class="style-quiz">
+            <div class="container">
+                <div class="quiz-card">
+                    <h2>找到妳的命定風格</h2>
+                    <p>回答幾個簡單問題，我們為妳推薦最適合的服裝！</p>
+                    <div class="quiz-content" id="quiz-content">
+                        <div class="quiz-question active" data-question="0">
+                            <h3>妳最喜歡的場合？</h3>
+                            <div class="quiz-options">
+                                <button class="quiz-option" data-value="office">辦公室</button>
+                                <button class="quiz-option" data-value="casual">休閒聚會</button>
+                                <button class="quiz-option" data-value="date">約會</button>
+                            </div>
+                        </div>
+                        <div class="quiz-question" data-question="1">
+                            <h3>妳偏好的顏色？</h3>
+                            <div class="quiz-options">
+                                <button class="quiz-option" data-value="neutral">中性色調</button>
+                                <button class="quiz-option" data-value="soft">柔和色彩</button>
+                                <button class="quiz-option" data-value="bold">鮮明色彩</button>
+                            </div>
+                        </div>
+                        <div class="quiz-result hidden">
+                            <h3>推薦給妳的風格</h3>
+                            <div id="quiz-recommendation"></div>
+                            <button class="btn btn--primary" id="quiz-restart">重新測驗</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Instagram Section -->
+        <section class="instagram">
+            <div class="container">
+                <h2 class="section-title">#MYSHEROS穿搭</h2>
+                <p class="section-subtitle">追蹤我們的 Instagram 獲得更多穿搭靈感</p>
+                <div class="instagram__grid">
+                    <div class="instagram__post">
+                        <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=300&h=300&fit=crop" alt="Instagram post">
+                    </div>
+                    <div class="instagram__post">
+                        <img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?w=300&h=300&fit=crop" alt="Instagram post">
+                    </div>
+                    <div class="instagram__post">
+                        <img src="https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=300&h=300&fit=crop" alt="Instagram post">
+                    </div>
+                    <div class="instagram__post">
+                        <img src="https://images.unsplash.com/photo-1543269664-56d93c1b41a6?w=300&h=300&fit=crop" alt="Instagram post">
+                    </div>
+                </div>
+                <button class="btn btn--outline" onclick="window.open('https://instagram.com', '_blank')">
+                    追蹤 @mysheros
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <!-- Product Modal -->
+    <div class="modal hidden" id="product-modal">
+        <div class="modal__backdrop"></div>
+        <div class="modal__content">
+            <button class="modal__close" id="modal-close">&times;</button>
+            <div class="product-detail" id="product-detail">
+                <!-- Product detail content will be inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div class="modal hidden" id="cart-modal">
+        <div class="modal__backdrop"></div>
+        <div class="modal__content">
+            <button class="modal__close" id="cart-modal-close">&times;</button>
+            <div class="cart-content">
+                <h2>購物車</h2>
+                <div id="cart-items">
+                    <p class="empty-cart">購物車是空的</p>
+                </div>
+                <div class="cart-footer">
+                    <div class="cart-total">
+                        <strong>總計: $<span id="cart-total">0</span></strong>
+                    </div>
+                    <button class="btn btn--primary btn--full-width" id="checkout-btn">
+                        前往結帳
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__section">
+                    <h3>MYSHEROS</h3>
+                    <p>為年輕女性打造的質感服飾品牌</p>
+                </div>
+                <div class="footer__section">
+                    <h4>客戶服務</h4>
+                    <ul>
+                        <li><a href="#">聯絡我們</a></li>
+                        <li><a href="#">退換貨政策</a></li>
+                        <li><a href="#">尺寸指南</a></li>
+                    </ul>
+                </div>
+                <div class="footer__section">
+                    <h4>關於我們</h4>
+                    <ul>
+                        <li><a href="#">品牌故事</a></li>
+                        <li><a href="#">門市據點</a></li>
+                        <li><a href="#">招募訊息</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <p>&copy; 2025 MYSHEROS. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
+
