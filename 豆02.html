@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mira - 年輕女性服裝品牌</title>
+    <!-- 引入外部资源 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
+    
+    <!-- 配置Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#D8A7B1', // 柔和粉紅色作為主色
+                        secondary: '#5A638C', // 深紫色作為輔色
+                        neutral: '#F8F5F2', // 淺米色背景
+                        dark: '#2D2E36', // 深色文字
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    
+    <!-- 自定义样式 -->
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .text-shadow {
+                text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+            }
+            .transition-custom {
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .hover-lift {
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            .hover-lift:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            }
+            .scrollbar-hide::-webkit-scrollbar {
+                display: none;
+            }
+        }
+    </style>
+    
+    <!-- 引入Google字体 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="font-sans bg-neutral text-dark antialiased">
+    <!-- 导航栏 -->
+    <header id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-sm shadow-sm">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16 md:h-20">
+                <!-- 品牌Logo -->
+                <a href="#" class="text-2xl md:text-3xl font-display font-bold tracking-tight">
+                    <span class="text-primary">Mira</span>
+                </a>
+                
+                <!-- 桌面导航菜单 -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#" class="font-medium hover:text-primary transition-custom">首頁</a>
+                    <a href="#new-arrivals" class="font-medium hover:text-primary transition-custom">新品</a>
+                    <a href="#categories" class="font-medium hover:text-primary transition-custom">商品分類</a>
+                    <a href="#lookbook" class="font-medium hover:text-primary transition-custom">穿搭靈感</a>
+                    <a href="#about" class="font-medium hover:text-primary transition-custom">關於我們</a>
+                </nav>
+                
+                <!-- 用户功能区 -->
+                <div class="flex items-center space-x-4">
+                    <button class="hover:text-primary transition-custom" aria-label="搜尋">
+                        <i class="fa fa-search text-lg"></i>
+                    </button>
+                    <button class="hover:text-primary transition-custom" aria-label="會員中心">
+                        <i class="fa fa-user text-lg"></i>
+                    </button>
+                    <button id="cartBtn" class="hover:text-primary transition-custom relative" aria-label="購物車">
+                        <i class="fa fa-shopping-bag text-lg"></i>
+                        <span id="cartCount" class="absolute -top-2 -right-2 bg-primary text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">0</span>
+                    </button>
+                    <button id="mobileMenuBtn" class="md:hidden hover:text-primary transition-custom" aria-label="選單">
+                        <i class="fa fa-bars text-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 移动导航菜单 -->
+        <div id="mobileMenu" class="md:hidden hidden bg-white border-t">
+            <div class="container mx-auto px-4 py-3 space-y-3">
+                <a href="#" class="block py-2 hover:text-primary transition-custom">首頁</a>
+                <a href="#new-arrivals" class="block py-2 hover:text-primary transition-custom">新品</a>
+                <a href="#categories" class="block py-2 hover:text-primary transition-custom">商品分類</a>
+                <a href="#lookbook" class="block py-2 hover:text-primary transition-custom">穿搭靈感</a>
+                <a href="#about" class="block py-2 hover:text-primary transition-custom">關於我們</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 主视觉轮播 -->
+    <section class="pt-16 md:pt-20">
+        <div id="heroCarousel" class="relative overflow-hidden">
+            <div class="carousel-container flex transition-transform duration-500">
+                <!-- 轮播项1 -->
+                <div class="carousel-item min-w-full relative">
+                    <div class="aspect-[16/9] md:aspect-[21/9] overflow-hidden">
+                        <img src="https://picsum.photos/id/64/1600/900" alt="夏季新品系列" class="w-full h-full object-cover">
+                    </div>
+                    <div class="absolute top-0 left-0 w-full h-full flex items-center">
+                        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                            <div class="max-w-lg text-white">
+                                <h2 class="text-[clamp(2rem,5vw,3.5rem)] font-display font-bold leading-tight text-shadow mb-4">
+                                    夏季新品系列
+                                </h2>
+                                <p class="text-[clamp(1rem,2vw,1.25rem)] mb-6 text-shadow">
+                                    輕盈面料與清新色彩，演繹夏日的自在與優雅
+                                </p>
+                                <a href="#new-arrivals" class="inline-block bg-white text-dark font-medium px-6 py-3 hover:bg-primary hover:text-white transition-custom">
+                                    探索系列
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 轮播项2 -->
+                <div class="carousel-item min-w-full relative">
+                    <div class="aspect-[16/9] md:aspect-[21/9] overflow-hidden">
+                        <img src="https://picsum.photos/id/21/1600/900" alt="夏日約會穿搭" class="w-full h-full object-cover">
+                    </div>
+                    <div class="absolute top-0 left-0 w-full h-full flex items-center justify-end">
+                        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                            <div class="max-w-lg text-white text-right">
+                                <h2 class="text-[clamp(2rem,5vw,3.5rem)] font-display font-bold leading-tight text-shadow mb-4">
+                                    夏日約會穿搭
+                                </h2>
+                                <p class="text-[clamp(1rem,2vw,1.25rem)] mb-6 text-shadow">
+                                    精選單品，讓你成為約會中最亮眼的存在
+                                </p>
+                                <a href="#lookbook" class="inline-block bg-white text-dark font-medium px-6 py-3 hover:bg-primary hover:text-white transition-custom">
+                                    查看穿搭
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 轮播项3 -->
+                <div class="carousel-item min-w-full relative">
+                    <div class="aspect-[16/9] md:aspect-[21/9] overflow-hidden">
+                        <img src="https://picsum.photos/id/65/1600/900" alt="會員獨享優惠" class="w-full h-full object-cover">
+                    </div>
+                    <div class="absolute top-0 left-0 w-full h-full flex items-center">
+                        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                            <div class="max-w-lg text-white">
+                                <h2 class="text-[clamp(2rem,5vw,3.5rem)] font-display font-bold leading-tight text-shadow mb-4">
+                                    會員獨享優惠
+                                </h2>
+                                <p class="text-[clamp(1rem,2vw,1.25rem)] mb-6 text-shadow">
+                                    新會員註冊即享85折，還可累積點數兌換好禮
+                                </p>
+                                <a href="#" class="inline-block bg-white text-dark font-medium px-6 py-3 hover:bg-primary hover:text-white transition-custom">
+                                    立即加入
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 轮播控制按钮 -->
+            <button id="prevSlide" class="absolute left-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/60 text-white w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-sm transition-custom">
+                <i class="fa fa-chevron-left"></i>
+            </button>
+            <button id="nextSlide" class="absolute right-4 top-1/2 -translate-y-1/2 bg-white/30 hover:bg-white/60 text-white w-10 h-10 rounded-full flex items-center justify-center backdrop-blur-sm transition-custom">
+                <i class="fa fa-chevron-right"></i>
+            </button>
+            
+            <!-- 轮播指示器 -->
+            <div class="absolute bottom-4 left-0 right-0 flex justify-center space-x-2">
+                <button class="carousel-dot w-3 h-3 rounded-full bg-white/50 hover:bg-white active" data-index="0"></button>
+                <button class="carousel-dot w-3 h-3 rounded-full bg-white/50 hover:bg-white" data-index="1"></button>
+                <button class="carousel-dot w-3 h-3 rounded-full bg-white/50 hover:bg-white" data-index="2"></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 风格测试 -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-display font-bold mb-4">找到你的命定風格</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">完成簡單測驗，我們將為你推薦最適合的穿搭風格與單品</p>
+            </div>
+            
+            <div class="max-w-3xl mx-auto">
+                <button id="startQuizBtn" class="w-full bg-primary hover:bg-primary/90 text-white font-medium py-4 px-6 rounded-md transition-custom text-lg">
+                    開始風格測驗
+                </button>
+            </div>
+            
+            <!-- 风格测试模态框 -->
+            <div id="styleQuizModal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+                <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" id="modalOverlay"></div>
+                <div class="relative bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                    <div class="p-6">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-xl font-display font-bold">你的命定風格是？</h3>
+                            <button id="closeQuizBtn" class="text-gray-500 hover:text-dark transition-custom">
+                                <i class="fa fa-times text-xl"></i>
+                            </button>
+                        </div>
+                        
+                        <div id="quizContainer">
+                            <!-- 问题1 -->
+                            <div class="quiz-step active" data-step="1">
+                                <p class="text-lg font-medium mb-4">1. 你最喜歡的穿搭風格是？</p>
+                                <div class="space-y-3">
+                                    <label class="block p-4 border border-gray-200 rounded-md hover:border-primary cursor-pointer transition-custom">
+                                        <input type="radio" name="style" value="casual" class="mr-2"> 休閒舒適
+                                    </label>
+                                    <label class="block p-4 border border-gray-200 rounded-md hover:border-primary cursor-pointer transition-custom">
+                                        <input type="radio" name="style" value="elegant" class="mr-2"> 優雅知性
+                                    </label>
+                                    <label class="block p-4 border border-gray-200 rounded-md hover:border-primary cursor-pointer transition-custom">
+                                        <input type="radio" name="style" value="trendy" class="mr-2"> 時尚前衛
+                                    </label>
+                                    <label class="block p-4 border border-gray-200 rounded-md hover:border-primary cursor-pointer transition-custom">
+                                        <input type="radio" name="style" value="minimal" class="mr-2"> 簡約質感
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- 问题2 -->
+                            <div class="quiz-step hidden" data-step="2">
+                                <p class="text-lg font-medium mb-4">2. 你最常穿著的場合是？</p>
+                                <div class="space-y-3">
+                                    <label class="block p-4 border border-gray-200 rounded-md hover:border-primary cursor-pointer transition-custom">
+                                        <input type="radio" name="occasion" value="work" class="mr-2"> 辦公室
+                                    </label>
+                                    <label class="block p-4 border border-gray-200 rounded-md hover:border-primary cursor-pointer transition-custom">
+                                        <input type="radio" name="occasion" value="daily" class="mr-2"> 日常外出
+                                    </label>
+                                    <label class="block p-4 border border-gray-200 rounded-md hover:border-primary cursor-pointer transition-custom">
+                                        <input type="radio" name="occasion" value="date" class="mr-2"> 約會聚會
+                                    </label>
+                                    <label class="block p-4 border border-gray-200 rounded-md hover:border-primary cursor-pointer transition-custom">
+                                        <input type="radio" name="occasion" value="weekend" class="mr-2"> 週末休閒
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- 问题3 -->
+                            <div class="quiz-step hidden" data-step="3">
+                                <p class="text-lg font-medium mb-4">3. 你偏愛的色系是？</p>
+                                <div class="space-y-3">
+                                    <label class="block p-4 border border-gray-200 rounded-md hover:border-primary cursor-pointer transition-custom">
+                                        <input type="radio" name="color" value="pastel" class="mr-2"> 柔和馬卡龍色
+                                    </label>
+                                    <label class="block p-4 border border-gray-200 rounded-md hover:border-primary cursor-pointer transition-custom">
+                                        <input type="radio" name="color" value="neutral" class="mr-2"> 中性黑白灰
+                                    </label>
+                                    <label class="block p-4 border border-gray-200 rounded-md hover:border-primary cursor-pointer transition-custom">
+                                        <input type="radio" name="color" value="vibrant" class="mr-2"> 鮮豔飽和色
+                                    </label>
+                                    <label class="block p-4 border border-gray-200 rounded-md hover:border-primary cursor-pointer transition-custom">
+                                        <input type="radio" name="color" value="earth" class="mr-2"> 大地自然色
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <!-- 结果 -->
+                            <div class="quiz-step hidden" data-step="4">
+                                <div id="quizResult" class="text-center py-4">
+                                    <h4 class="text-xl font-bold mb-3">你的風格是：<span id="resultStyle" class="text-primary">優雅知性風</span></h4>
+                                    <p class="mb-6">我們為你挑選了最適合的單品，點擊下方按鈕查看推薦</p>
+                                    <img src="https://picsum.photos/id/26/600/400" alt="風格推薦" class="w-full h-64 object-cover rounded-md mb-6">
+                                    <a href="#recommendations" class="inline-block bg-primary hover:bg-primary/90 text-white font-medium py-3 px-6 rounded-md transition-custom">
+                                        查看推薦單品
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <!-- 导航按钮 -->
+                            <div class="flex justify-between mt-8">
+                                <button id="prevQuestion" class="px-6 py-2 border border-gray-300 rounded-md hover:border-primary hover:text-primary transition-custom hidden">
+                                    上一題
+                                </button>
+                                <div class="ml-auto">
+                                    <button id="nextQuestion" class="px-6 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-custom">
+                                        下一題
+                                    </button>
+                                    <button id="submitQuiz" class="px-6 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-custom hidden">
+                                        查看結果
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 新品推荐 -->
+    <section id="new-arrivals" class="py-16 bg-neutral">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-end mb-12">
+                <div>
+                    <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-display font-bold mb-2">新品上市</h2>
+                    <p class="text-gray-600">探索最新到貨的時尚單品</p>
+                </div>
+                <a href="#" class="hidden md:block text-primary font-medium hover:underline transition-custom">
+                    查看全部 <i class="fa fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+                <!-- 商品1 -->
+                <div class="group bg-white rounded-lg overflow-hidden hover-lift">
+                    <div class="relative overflow-hidden">
+                        <img src="https://picsum.photos/id/62/500/600" alt="蕾絲邊雪紡上衣" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute top-3 left-3">
+                            <span class="bg-primary text-white text-xs px-2 py-1 rounded">新品</span>
+                        </div>
+                        <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <button class="add-to-cart bg-white text-dark px-4 py-2 rounded-md font-medium mr-2 transform translate-y-4 group-hover:translate-y-0 transition-transform" data-id="1" data-name="蕾絲邊雪紡上衣" data-price="1290">
+                                加入購物車
+                            </button>
+                            <button class="bg-white text-dark w-10 h-10 rounded-full flex items-center justify-center transform translate-y-4 group-hover:translate-y-0 transition-transform">
+                                <i class="fa fa-heart-o"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-medium mb-1">蕾絲邊雪紡上衣</h3>
+                        <p class="text-gray-500 text-sm mb-2">淺粉 / 白色 / 薄荷綠</p>
+                        <p class="font-medium">NT$1,290</p>
+                    </div>
+                </div>
+                
+                <!-- 商品2 -->
+                <div class="group bg-white rounded-lg overflow-hidden hover-lift">
+                    <div class="relative overflow-hidden">
+                        <img src="https://picsum.photos/id/63/500/600" alt="高腰寬褲" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute top-3 left-3">
+                            <span class="bg-primary text-white text-xs px-2 py-1 rounded">新品</span>
+                        </div>
+                        <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <button class="add-to-cart bg-white text-dark px-4 py-2 rounded-md font-medium mr-2 transform translate-y-4 group-hover:translate-y-0 transition-transform" data-id="2" data-name="高腰寬褲" data-price="1590">
+                                加入購物車
+                            </button>
+                            <button class="bg-white text-dark w-10 h-10 rounded-full flex items-center justify-center transform translate-y-4 group-hover:translate-y-0 transition-transform">
+                                <i class="fa fa-heart-o"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-medium mb-1">高腰寬褲</h3>
+                        <p class="text-gray-500 text-sm mb-2">黑色 / 卡其 / 深藍</p>
+                        <p class="font-medium">NT$1,590</p>
+                    </div>
+                </div>
+                
+                <!-- 商品3 -->
+                <div class="group bg-white rounded-lg overflow-hidden hover-lift">
+                    <div class="relative overflow-hidden">
+                        <img src="https://picsum.photos/id/64/500/600" alt="碎花連身洋裝" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute top-3 left-3">
+                            <span class="bg-primary text-white text-xs px-2 py-1 rounded">新品</span>
+                        </div>
+                        <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <button class="add-to-cart bg-white text-dark px-4 py-2 rounded-md font-medium mr-2 transform translate-y-4 group-hover:translate-y-0 transition-transform" data-id="3" data-name="碎花連身洋裝" data-price="1890">
+                                加入購物車
+                            </button>
+                            <button class="bg-white text-dark w-10 h-10 rounded-full flex items-center justify-center transform translate-y-4 group-hover:translate-y-0 transition-transform">
+                                <i class="fa fa-heart-o"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-medium mb-1">碎花連身洋裝</h3>
+                        <p class="text-gray-500 text-sm mb-2">粉紅碎花 / 藍色碎花</p>
+                        <p class="font-medium">NT$1,890</p>
+                    </div>
+                </div>
+                
+                <!-- 商品4 -->
+                <div class="group bg-white rounded-lg overflow-hidden hover-lift">
+                    <div class="relative overflow-hidden">
+                        <img src="https://picsum.photos/id/65/500/600" alt="針織短版外套" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute top-3 left-3">
+                            <span class="bg-primary text-white text-xs px-2 py-1 rounded">新品</span>
+                        </div>
+                        <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <button class="add-to-cart bg-white text-dark px-4 py-2 rounded-md font-medium mr-2 transform translate-y-4 group-hover:translate-y-0 transition-transform" data-id="4" data-name="針織短版外套" data-price="1690">
+                                加入購物車
+                            </button>
+                            <button class="bg-white text-dark w-10 h-10 rounded-full flex items-center justify-center transform translate-y-4 group-hover:translate-y-0 transition-transform">
+                                <i class="fa fa-heart-o"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-medium mb-1">針織短版外套</h3>
+                        <p class="text-gray-500 text-sm mb-2">米白 / 淺灰 / 粉紫</p>
+                        <p class="font-medium">NT$1,690</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 text-center md:hidden">
+                <a href="#" class="inline-block text-primary font-medium hover:underline transition-custom">
+                    查看全部 <i class="fa fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 主题企划 -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-display font-bold mb-4">夏日主題企劃</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">為不同場合打造的完美穿搭，讓你輕鬆應對各種夏日約會</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- 企划1 -->
+                <div class="group relative rounded-lg overflow-hidden hover-lift h-96">
+                    <img src="https://picsum.photos/id/21/800/600" alt="海邊約會穿搭" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <h3 class="text-xl md:text-2xl font-display font-bold mb-2">海邊約會穿搭</h3>
+                        <p class="mb-4 opacity-0 group-hover:opacity-100 transition-opacity">輕盈飄逸的裙裝，搭配草帽與涼鞋，演繹海邊的浪漫氛圍</p>
+                        <a href="#" class="inline-flex items-center font-medium hover:underline">
+                            探索穿搭 <i class="fa fa-long-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- 企划2 -->
+                <div class="group relative rounded-lg overflow-hidden hover-lift h-96">
+                    <img src="https://picsum.photos/id/22/800/600" alt="城市漫步穿搭" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                    <div class="absolute bottom-0 left-0 right-0 p-6 text-white">
+                        <h3 class="text-xl md:text-2xl font-display font-bold mb-2">城市漫步穿搭</h3>
+                        <p class="mb-4 opacity-0 group-hover:opacity-100 transition-opacity">舒適休閒的褲裝搭配，兼具時尚感與行動力，適合城市探險</p>
+                        <a href="#" class="inline-flex items-center font-medium hover:underline">
+                            探索穿搭 <i class="fa fa-long-arrow-right ml-2 transform group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 商品分类 -->
+    <section id="categories" class="py-16 bg-neutral">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-display font-bold mb-4">商品分類</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">依據你的需求，輕鬆找到合適的單品</p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+                <!-- 分类1 -->
+                <a href="#" class="group relative rounded-lg overflow-hidden aspect-square hover-lift">
+                    <img src="https://picsum.photos/id/91/500/500" alt="上衣" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <h3 class="text-white font-display font-bold text-lg md:text-xl text-shadow">上衣</h3>
+                    </div>
+                </a>
+                
+                <!-- 分类2 -->
+                <a href="#" class="group relative rounded-lg overflow-hidden aspect-square hover-lift">
+                    <img src="https://picsum.photos/id/92/500/500" alt="下著" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <h3 class="text-white font-display font-bold text-lg md:text-xl text-shadow">下著</h3>
+                    </div>
+                </a>
+                
+                <!-- 分类3 -->
+                <a href="#" class="group relative rounded-lg overflow-hidden aspect-square hover-lift">
+                    <img src="https://picsum.photos/id/93/500/500" alt="洋裝" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <h3 class="text-white font-display font-bold text-lg md:text-xl text-shadow">洋裝</h3>
+                    </div>
+                </a>
+                
+                <!-- 分类4 -->
+                <a href="#" class="group relative rounded-lg overflow-hidden aspect-square hover-lift">
+                    <img src="https://picsum.photos/id/94/500/500" alt="外套" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+                    <div class="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <h3 class="text-white font-display font-bold text-lg md:text-xl text-shadow">外套</h3>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 穿搭灵感 Lookbook -->
+    <section id="lookbook" class="py-16 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-display font-bold mb-4">穿搭靈感</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">探索我們的造型師精心打造的完美穿搭組合</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Look 1 -->
+                <div class="relative group">
+                    <img src="https://picsum.photos/id/26/800/1000" alt="夏日清新穿搭" class="w-full h-auto rounded-lg">
+                    <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg"></div>
+                    
+                    <!-- 可点击的单品标记 -->
+                    <div class="absolute top-[30%] left-[25%] group-hover:block hidden">
+                        <button class="product-marker w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white relative" data-product="1">
+                            <i class="fa fa-plus"></i>
+                            <div class="absolute -bottom-32 left-1/2 -translate-x-1/2 bg-white p-3 rounded shadow-lg w-48 z-10">
+                                <img src="https://picsum.photos/id/62/100/100" alt="蕾絲邊雪紡上衣" class="w-full h-24 object-cover rounded mb-2">
+                                <h4 class="font-medium text-sm">蕾絲邊雪紡上衣</h4>
+                                <p class="text-primary text-sm">NT$1,290</p>
+                                <button class="add-to-cart w-full mt-2 bg-primary text-white text-xs py-1 rounded" data-id="1" data-name="蕾絲邊雪紡上衣" data-price="1290">
+                                    加入購物車
+                                </button>
+                            </div>
+                        </button>
+                    </div>
+                    
+                    <div class="absolute top-[55%] left-[60%] group-hover:block hidden">
+                        <button class="product-marker w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white relative" data-product="2">
+                            <i class="fa fa-plus"></i>
+                            <div class="absolute -bottom-32 left-1/2 -translate-x-1/2 bg-white p-3 rounded shadow-lg w-48 z-10">
+                                <img src="https://picsum.photos/id/63/100/100" alt="高腰寬褲" class="w-full h-24 object-cover rounded mb-2">
+                                <h4 class="font-medium text-sm">高腰寬褲</h4>
+                                <p class="text-primary text-sm">NT$1,590</p>
+                                <button class="add-to-cart w-full mt-2 bg-primary text-white text-xs py-1 rounded" data-id="2" data-name="高腰寬褲" data-price="1590">
+                                    加入購物車
+                                </button>
+                            </div>
+                        </button>
+                    </div>
+                    
+                    <div class="absolute bottom-6 left-6 right-6">
+                        <h3 class="text-white font-display font-bold text-xl md:text-2xl text-shadow mb-2">夏日清新穿搭</h3>
+                        <p class="text-white text-shadow mb-4">輕盈面料搭配柔和色彩，營造夏日清新感</p>
+                        <button class="view-look-details bg-white/20 backdrop-blur-sm hover:bg-white/40 text-white px-4 py-2 rounded-md transition-custom">
+                            查看細節
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Look 2 -->
+                <div class="relative group">
+                    <img src="https://picsum.photos/id/27/800/1000" alt="都會休閒風" class="w-full h-auto rounded-lg">
+                    <div class="absolute inset-0 bg-black/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg"></div>
+                    
+                    <!-- 可点击的单品标记 -->
+                    <div class="absolute top-[40%] left-[70%] group-hover:block hidden">
+                        <button class="product-marker w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white relative" data-product="3">
+                            <i class="fa fa-plus"></i>
+                            <div class="absolute -bottom-32 left-1/2 -translate-x-1/2 bg-white p-3 rounded shadow-lg w-48 z-10">
+                                <img src="https://picsum.photos/id/64/100/100" alt="碎花連身洋裝" class="w-full h-24 object-cover rounded mb-2">
+                                <h4 class="font-medium text-sm">碎花連身洋裝</h4>
+                                <p class="text-primary text-sm">NT$1,890</p>
+                                <button class="add-to-cart w-full mt-2 bg-primary text-white text-xs py-1 rounded" data-id="3" data-name="碎花連身洋裝" data-price="1890">
+                                    加入購物車
+                                </button>
+                            </div>
+                        </button>
+                    </div>
+                    
+                    <div class="absolute top-[25%] left-[30%] group-hover:block hidden">
+                        <button class="product-marker w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white relative" data-product="4">
+                            <i class="fa fa-plus"></i>
+                            <div class="absolute -bottom-32 left-1/2 -translate-x-1/2 bg-white p-3 rounded shadow-lg w-48 z-10">
+                                <img src="https://picsum.photos/id/65/100/100" alt="針織短版外套" class="w-full h-24 object-cover rounded mb-2">
+                                <h4 class="font-medium text-sm">針織短版外套</h4>
+                                <p class="text-primary text-sm">NT$1,690</p>
+                                <button class="add-to-cart w-full mt-2 bg-primary text-white text-xs py-1 rounded" data-id="4" data-name="針織短版外套" data-price="1690">
+                                    加入購物車
+                                </button>
+                            </div>
+                        </button>
+                    </div>
+                    
+                    <div class="absolute bottom-6 left-6 right-6">
+                        <h3 class="text-white font-display font-bold text-xl md:text-2xl text-shadow mb-2">都會休閒風</h3>
+                        <p class="text-white text-shadow mb-4">洋裝搭配輕便外套，適合多變的天氣與場合</p>
+                        <button class="view-look-details bg-white/20 backdrop-blur-sm hover:bg-white/40 text-white px-4 py-2 rounded-md transition-custom">
+                            查看細節
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-10 text-center">
+                <a href="#" class="inline-block border-2 border-primary text-primary hover:bg-primary hover:text-white font-medium px-6 py-3 transition-custom">
+                    查看更多穿搭靈感
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 推荐商品 -->
+    <section id="recommendations" class="py-16 bg-neutral">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-end mb-12">
+                <div>
+                    <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-display font-bold mb-2">猜你喜歡</h2>
+                    <p class="text-gray-600">根據你的喜好推薦的單品</p>
+                </div>
+                <a href="#" class="hidden md:block text-primary font-medium hover:underline transition-custom">
+                    更多推薦 <i class="fa fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+                <!-- 推荐商品1 -->
+                <div class="group bg-white rounded-lg overflow-hidden hover-lift">
+                    <div class="relative overflow-hidden">
+                        <img src="https://picsum.photos/id/66/500/600" alt="棉質T恤" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <button class="add-to-cart bg-white text-dark px-4 py-2 rounded-md font-medium mr-2 transform translate-y-4 group-hover:translate-y-0 transition-transform" data-id="5" data-name="棉質T恤" data-price="890">
+                                加入購物車
+                            </button>
+                            <button class="bg-white text-dark w-10 h-10 rounded-full flex items-center justify-center transform translate-y-4 group-hover:translate-y-0 transition-transform">
+                                <i class="fa fa-heart-o"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-medium mb-1">棉質T恤</h3>
+                        <p class="text-gray-500 text-sm mb-2">白色 / 淺灰 / 薄荷綠</p>
+                        <p class="font-medium">NT$890</p>
+                    </div>
+                </div>
+                
+                <!-- 推荐商品2 -->
+                <div class="group bg-white rounded-lg overflow-hidden hover-lift">
+                    <div class="relative overflow-hidden">
+                        <img src="https://picsum.photos/id/67/500/600" alt="高腰牛仔短褲" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute top-3 left-3">
+                            <span class="bg-secondary text-white text-xs px-2 py-1 rounded">熱銷</span>
+                        </div>
+                        <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <button class="add-to-cart bg-white text-dark px-4 py-2 rounded-md font-medium mr-2 transform translate-y-4 group-hover:translate-y-0 transition-transform" data-id="6" data-name="高腰牛仔短褲" data-price="1390">
+                                加入購物車
+                            </button>
+                            <button class="bg-white text-dark w-10 h-10 rounded-full flex items-center justify-center transform translate-y-4 group-hover:translate-y-0 transition-transform">
+                                <i class="fa fa-heart-o"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-medium mb-1">高腰牛仔短褲</h3>
+                        <p class="text-gray-500 text-sm mb-2">淺藍 / 深藍</p>
+                        <p class="font-medium">NT$1,390</p>
+                    </div>
+                </div>
+                
+                <!-- 推荐商品3 -->
+                <div class="group bg-white rounded-lg overflow-hidden hover-lift">
+                    <div class="relative overflow-hidden">
+                        <img src="https://picsum.photos/id/68/500/600" alt="薄款西裝外套" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <button class="add-to-cart bg-white text-dark px-4 py-2 rounded-md font-medium mr-2 transform translate-y-4 group-hover:translate-y-0 transition-transform" data-id="7" data-name="薄款西裝外套" data-price="2190">
+                                加入購物車
+                            </button>
+                            <button class="bg-white text-dark w-10 h-10 rounded-full flex items-center justify-center transform translate-y-4 group-hover:translate-y-0 transition-transform">
+                                <i class="fa fa-heart-o"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-medium mb-1">薄款西裝外套</h3>
+                        <p class="text-gray-500 text-sm mb-2">黑色 / 白色 / 駝色</p>
+                        <p class="font-medium">NT$2,190</p>
+                    </div>
+                </div>
+                
+                <!-- 推荐商品4 -->
+                <div class="group bg-white rounded-lg overflow-hidden hover-lift">
+                    <div class="relative overflow-hidden">
+                        <img src="https://picsum.photos/id/69/500/600" alt="印花長裙" class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-105">
+                        <div class="absolute top-3 left-3">
+                            <span class="bg-secondary text-white text-xs px-2 py-1 rounded">熱銷</span>
+                        </div>
+                        <div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <button class="add-to-cart bg-white text-dark px-4 py-2 rounded-md font-medium mr-2 transform translate-y-4 group-hover:translate-y-0 transition-transform" data-id="8" data-name="印花長裙" data-price="1790">
+                                加入購物車
+                            </button>
+                            <button class="bg-white text-dark w-10 h-10 rounded-full flex items-center justify-center transform translate-y-4 group-hover:translate-y-0 transition-transform">
+                                <i class="fa fa-heart-o"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-medium mb-1">印花長裙</h3>
+                        <p class="text-gray-500 text-sm mb-2">藍色印花 / 紅色印花</p>
+                        <p class="font-medium">NT$1,790</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 text-center md:hidden">
+                <a href="#" class="inline-block text-primary font-medium hover:underline transition-custom">
+                    更多推薦 <i class="fa fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Instagram 串流 -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-display font-bold mb-4">追蹤我們的 Instagram</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">@mira_fashion | 標記 #MiraStyle 分享你的穿搭</p>
+            </div>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                <a href="#" class="group relative aspect-square overflow-hidden">
+                    <img src="https://picsum.photos/id/42/300/300" alt="Instagram 貼文" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <i class="fa fa-instagram text-white text-2xl"></i>
+                    </div>
+                </a>
+                <a href="#" class="group relative aspect-square overflow-hidden">
+                    <img src="https://picsum.photos/id/43/300/300" alt="Instagram 貼文" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <i class="fa fa-instagram text-white text-2xl"></i>
+                    </div>
+                </a>
+                <a href="#" class="group relative aspect-square overflow-hidden">
+                    <img src="https://picsum.photos/id/44/300/300" alt="Instagram 貼文" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <i class="fa fa-instagram text-white text-2xl"></i>
+                    </div>
+                </a>
+                <a href="#" class="group relative aspect-square overflow-hidden">
+                    <img src="https://picsum.photos/id/45/300/300" alt="Instagram 貼文" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <i class="fa fa-instagram text-white text-2xl"></i>
+                    </div>
+                </a>
+                <a href="#" class="group relative aspect-square overflow-hidden">
+                    <img src="https://picsum.photos/id/46/300/300" alt="Instagram 貼文" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <i class="fa fa-instagram text-white text-2xl"></i>
+                    </div>
+                </a>
+                <a href="#" class="group relative aspect-square overflow-hidden">
+                    <img src="https://picsum.photos/id/47/300/300" alt="Instagram 貼文" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                    <div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                        <i class="fa fa-instagram text-white text-2xl"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 关于我们 -->
+    <section id="about" class="py-16 bg-neutral">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-display font-bold mb-6">關於 Mira</h2>
+                    <p class="text-gray-700 mb-4 leading-relaxed">
+                        Mira 成立於2018年，是一個專為年輕女性打造的服裝品牌。我們相信，時尚不僅是外表的展現，更是自我風格的表達。
+                    </p>
+                    <p class="text-gray-700 mb-6 leading-relaxed">
+                        我們的設計團隊來自世界各地，融合多元文化與審美，為你帶來兼具舒適度與時尚感的服裝。每一件商品都經過精心挑選與製作，注重材質與細節，讓你穿得自信又舒適。
+                    </p>
+                    <a href="#" class="inline-block bg-primary hover:bg-primary/90 text-white font-medium px-6 py-3 transition-custom">
+                        了解更多品牌故事
+                    </a>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <img src="https://picsum.photos/id/52/500/600" alt="品牌形象" class="rounded-lg h-64 object-cover">
+                    <img src="https://picsum.photos/id/53/500/600" alt="品牌形象" class="rounded-lg h-80 mt-12 object-cover">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 订阅区域 -->
+    <section class="py-16 bg-primary/10">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-3xl mx-auto text-center">
+                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-display font-bold mb-4">訂閱我們的電子報</h2>
+                <p class="text-gray-600 mb-8">
+                    即時獲得最新商品資訊、獨家優惠與穿搭靈感
+                </p>
+                <form class="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
+                    <input type="email" placeholder="輸入你的信箱" class="flex-1 px-4 py-3 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                    <button type="submit" class="bg-primary hover:bg-primary/90 text-white font-medium px-6 py-3 rounded-md transition-custom whitespace-nowrap">
+                        立即訂閱
+                    </button>
+                </form>
+                <p class="text-gray-500 text-sm mt-4">
+                    我們重視你的隱私，不會將你的資訊分享給第三方
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-dark text-white pt-16 pb-8">
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <h3 class="text-2xl font-display font-bold mb-6">
+                        <span class="text-primary">Mira</span>
+                    </h3>
+                    <p class="text-gray-400 mb-6">
+                        為年輕女性打造的時尚服裝品牌，讓你自信展現獨特風格。
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-primary transition-custom">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-custom">
+                            <i class="fa fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-custom">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-custom">
+                            <i class="fa fa-pinterest"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-medium mb-6">購物指南</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-custom">會員註冊</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-custom">購物流程</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-custom">付款方式</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-custom">配送方式</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-custom">退換貨政策</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-medium mb-6">關於我們</h4>
+                    <ul class="space-y-3">
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-custom">品牌故事</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-custom">門市據點</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-custom">加入我們</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-custom">隱私政策</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-primary transition-custom">使用條款</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-lg font-medium mb-6">聯絡我們</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fa fa-map-marker text-primary mt-1 mr-3"></i>
+                            <span class="text-gray-400">台北市大安區忠孝東路四段123號</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-phone text-primary mr-3"></i>
+                            <span class="text-gray-400">02-1234-5678</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-envelope text-primary mr-3"></i>
+                            <span class="text-gray-400">service@mira.com</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fa fa-clock-o text-primary mr-3"></i>
+                            <span class="text-gray-400">週一至週日 10:00-22:00</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 pt-8">
+                <p class="text-gray-500 text-sm text-center">
+                    &copy; 2023 Mira Fashion. 保留所有權利。
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 购物车侧边栏 -->
+    <div id="cartSidebar" class="fixed top-0 right-0 h-full w-full sm:w-96 bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300">
+        <div class="h-full flex flex-col">
+            <div class="p-6 border-b">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xl font-display font-bold">購物車</h3>
+                    <button id="closeCartBtn" class="text-gray-500 hover:text-dark transition-custom">
+                        <i class="fa fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="cartItems" class="flex-1 overflow-y-auto p-6 space-y-4">
+                <!-- 购物车为空状态 -->
+                <div id="emptyCart" class="h-full flex flex-col items-center justify-center text-center">
+                    <i class="fa fa-shopping-bag text-5xl text-gray-300 mb-4"></i>
+                    <p class="text-gray-500 mb-6">你的購物車是空的</p>
+                    <button id="startShoppingBtn" class="bg-primary hover:bg-primary/90 text-white font-medium px-6 py-3 transition-custom">
+                        開始購物
+                    </button>
+                </div>
+                
+                <!-- 购物车项目将通过JS动态添加 -->
+            </div>
+            
+            <div class="p-6 border-t">
+                <div class="flex justify-between mb-4">
+                    <span class="font-medium">小計</span>
+                    <span id="cartSubtotal" class="font-bold">NT$0</span>
+                </div>
+                <button id="checkoutBtn" class="w-full bg-primary hover:bg-primary/90 text-white font-medium py-3 rounded-md transition-custom mb-3 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    前往結帳
+                </button>
+                <button id="continueShoppingBtn" class="w-full border border-gray-300 hover:border-primary hover:text-primary text-dark font-medium py-3 rounded-md transition-custom">
+                    繼續購物
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 购物车遮罩 -->
+    <div id="cartOverlay" class="fixed inset-0 bg-black/50 z-40 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+    
+    <!-- 添加到购物车提示 -->
+    <div id="addToCartNotification" class="fixed bottom-6 right-6 bg-dark text-white p-4 rounded-lg shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 z-50 flex items-center">
+        <i class="fa fa-check-circle text-primary mr-2"></i>
+        <span>已加入購物車</span>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // 导航栏滚动效果
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-md');
+                navbar.classList.remove('shadow-sm');
+            } else {
+                navbar.classList.remove('shadow-md');
+                navbar.classList.add('shadow-sm');
+            }
+        });
+        
+        // 移动菜单切换
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // 轮播功能
+        const carouselContainer = document.querySelector('.carousel-container');
+        const carouselItems = document.querySelectorAll('.carousel-item');
+        const prevSlideBtn = document.getElementById('prevSlide');
+        const nextSlideBtn = document.getElementById('nextSlide');
+        const carouselDots = document.querySelectorAll('.carousel-dot');
+        let currentSlide = 0;
+        const totalSlides = carouselItems.length;
+        
+        function updateCarousel() {
+            carouselContainer.style.transform = `translateX(-${currentSlide * 100}%)`;
+            
+            // 更新指示器
+            carouselDots.forEach((dot, index) => {
+                if (index === currentSlide) {
+                    dot.classList.add('bg-white');
+                    dot.classList.remove('bg-white/50');
+                } else {
+                    dot.classList.remove('bg-white');
+                    dot.classList.add('bg-white/50');
+                }
+            });
+        }
+        
+        prevSlideBtn.addEventListener('click', () => {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateCarousel();
+        });
+        
+        nextSlideBtn.addEventListener('click', () => {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateCarousel();
+        });
+        
+        carouselDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                currentSlide = parseInt(dot.dataset.index);
+                updateCarousel();
+            });
+        });
+        
+        // 自动轮播
+        let carouselInterval = setInterval(() => {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateCarousel();
+        }, 5000);
+        
+        // 鼠标悬停时暂停轮播
+        document.getElementById('heroCarousel').addEventListener('mouseenter', () => {
+            clearInterval(carouselInterval);
+        });
+        
+        document.getElementById('heroCarousel').addEventListener('mouseleave', () => {
+            carouselInterval = setInterval(() => {
+                currentSlide = (currentSlide + 1) % totalSlides;
+                updateCarousel();
+            }, 5000);
+        });
+        
+        // 风格测试模态框
+        const styleQuizModal = document.getElementById('styleQuizModal');
+        const startQuizBtn = document.getElementById('startQuizBtn');
+        const closeQuizBtn = document.getElementById('closeQuizBtn');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const nextQuestionBtn = document.getElementById('nextQuestion');
+        const prevQuestionBtn = document.getElementById('prevQuestion');
+        const submitQuizBtn = document.getElementById('submitQuiz');
+        const quizSteps = document.querySelectorAll('.quiz-step');
+        let currentStep = 1;
+        const totalSteps = quizSteps.length - 1; // 减去结果页
+        
+        function showStep(step) {
+            quizSteps.forEach(s => s.classList.add('hidden'));
+            document.querySelector(`.quiz-step[data-step="${step}"]`).classList.remove('hidden');
+            
+            // 更新按钮状态
+            if (step === 1) {
+                prevQuestionBtn.classList.add('hidden');
+            } else {
+                prevQuestionBtn.classList.remove('hidden');
+            }
+            
+            if (step === totalSteps) {
+                nextQuestionBtn.classList.add('hidden');
+                submitQuizBtn.classList.remove('hidden');
+            } else {
+                nextQuestionBtn.classList.remove('hidden');
+                submitQuizBtn.classList.add('hidden');
+            }
+        }
+        
+        startQuizBtn.addEventListener('click', () => {
+            styleQuizModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        });
+        
+        function closeQuiz() {
+            styleQuizModal.classList.add('hidden');
+            document.body.style.overflow = '';
+            currentStep = 1;
+            showStep(currentStep);
+        }
+        
+        closeQuizBtn.addEventListener('click', closeQuiz);
+        modalOverlay.addEventListener('click', closeQuiz);
+        
+        nextQuestionBtn.addEventListener('click', () => {
+            if (currentStep < totalSteps) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        });
+        
+        prevQuestionBtn.addEventListener('click', () => {
+            if (currentStep > 1) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        });
+        
+        submitQuizBtn.addEventListener('click', () => {
+            // 显示结果页
+            showStep(4);
+            
+            // 根据选择生成结果（简单示例）
+            const style = document.querySelector('input[name="style"]:checked')?.value || 'elegant';
+            let styleText = '';
+            
+            switch(style) {
+                case 'casual':
+                    styleText = '休閒舒適風';
+                    break;
+                case 'elegant':
+                    styleText = '優雅知性風';
+                    break;
+                case 'trendy':
+                    styleText = '時尚前衛風';
+                    break;
+                case 'minimal':
+                    styleText = '簡約質感風';
+                    break;
+            }
+            
+            document.getElementById('resultStyle').textContent = styleText;
+        });
+        
+        // 购物车功能
+        const cartSidebar = document.getElementById('cartSidebar');
+        const cartBtn = document.getElementById('cartBtn');
+        const closeCartBtn = document.getElementById('closeCartBtn');
+        const cartOverlay = document.getElementById('cartOverlay');
+        const startShoppingBtn = document.getElementById('startShoppingBtn');
+        const continueShoppingBtn = document.getElementById('continueShoppingBtn');
+        const cartItems = document.getElementById('cartItems');
+        const cartCount = document.getElementById('cartCount');
+        const cartSubtotal = document.getElementById('cartSubtotal');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+        const addToCartNotification = document.getElementById('addToCartNotification');
+        
+        let cart = [];
+        
+        function openCart() {
+            cartSidebar.classList.remove('translate-x-full');
+            cartOverlay.classList.remove('opacity-0', 'pointer-events-none');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeCart() {
+            cartSidebar.classList.add('translate-x-full');
+            cartOverlay.classList.add('opacity-0', 'pointer-events-none');
+            document.body.style.overflow = '';
+        }
+        
+        cartBtn.addEventListener('click', openCart);
+        closeCartBtn.addEventListener('click', closeCart);
+        cartOverlay.addEventListener('click', closeCart);
+        startShoppingBtn.addEventListener('click', closeCart);
+        continueShoppingBtn.addEventListener('click', closeCart);
+        
+        // 更新购物车显示
+        function updateCartDisplay() {
+            // 清空现有项目
+            while (cartItems.firstChild) {
+                if (cartItems.firstChild.id !== 'emptyCart') {
+                    cartItems.removeChild(cartItems.firstChild);
+                } else {
+                    break;
+                }
+            }
+            
+            const emptyCart = document.getElementById('emptyCart');
+            
+            if (cart.length === 0) {
+                // 显示空购物车状态
+                emptyCart.classList.remove('hidden');
+                checkoutBtn.disabled = true;
+            } else {
+                // 隐藏空购物车状态
+                emptyCart.classList.add('hidden');
+                checkoutBtn.disabled = false;
+                
+                // 添加购物车项目
+                cart.forEach((item, index) => {
+                    const cartItem = document.createElement('div');
+                    cartItem.className = 'flex items-center gap-4 pb-4 border-b';
+                    cartItem.innerHTML = `
+                        <img src="https://picsum.photos/id/${61 + item.id}/100/100" alt="${item.name}" class="w-20 h-20 object-cover rounded">
+                        <div class="flex-1">
+                            <h4 class="font-medium">${item.name}</h4>
+                            <p class="text-gray-500 text-sm">數量: ${item.quantity}</p>
+                            <p class="text-primary font-medium">NT$${item.price}</p>
+                        </div>
+                        <button class="remove-item text-gray-400 hover:text-red-500" data-index="${index}">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    `;
+                    cartItems.appendChild(cartItem);
+                });
+                
+                // 添加删除事件监听
+                document.querySelectorAll('.remove-item').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const index = parseInt(e.currentTarget.dataset.index);
+                        cart.splice(index, 1);
+                        updateCartDisplay();
+                    });
+                });
+            }
+            
+            // 更新购物车数量和小计
+            const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+            const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+            
+            cartCount.textContent = totalItems;
+            cartSubtotal.textContent = `NT$${subtotal}`;
+        }
+        
+        // 添加到购物车
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const id = parseInt(e.currentTarget.dataset.id);
+                const name = e.currentTarget.dataset.name;
+                const price = parseInt(e.currentTarget.dataset.price);
+                
+                // 检查商品是否已在购物车中
+                const existingItem = cart.find(item => item.id === id);
+                
+                if (existingItem) {
+                    // 增加数量
+                    existingItem.quantity++;
+                } else {
+                    // 添加新商品
+                    cart.push({ id, name, price, quantity: 1 });
+                }
+                
+                // 更新购物车显示
+                updateCartDisplay();
+                
+                // 显示添加成功提示
+                addToCartNotification.classList.remove('translate-y-20', 'opacity-0');
+                
+                // 3秒后隐藏提示
+                setTimeout(() => {
+                    addToCartNotification.classList.add('translate-y-20', 'opacity-0');
+                }, 3000);
+                
+                // 如果是在lookbook中点击，不关闭购物车
+                if (!e.currentTarget.closest('.product-marker')) {
+                    openCart();
+                }
+            });
+        });
+        
+        // 初始化购物车显示
+        updateCartDisplay();
+        
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    // 关闭移动菜单（如果打开）
+                    mobileMenu.classList.add('hidden');
+                    
+                    // 平滑滚动到目标位置
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', () => {
+            // 确保轮播正确显示
+            updateCarousel();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FashionHeros | 年轻女性时尚服饰</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        body {
+            color: #333;
+            background-color: #fff;
+            line-height: 1.6;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        ul {
+            list-style: none;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* 头部样式 */
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #e83e8c;
+        }
+        
+        .search-bar {
+            flex-grow: 1;
+            margin: 0 20px;
+            position: relative;
+        }
+        
+        .search-bar input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            font-size: 14px;
+        }
+        
+        .search-bar button {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #888;
+            cursor: pointer;
+        }
+        
+        .header-icons a {
+            margin-left: 15px;
+            font-size: 18px;
+            color: #555;
+            position: relative;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background-color: #e83e8c;
+            color: white;
+            font-size: 10px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        nav ul {
+            display: flex;
+            justify-content: center;
+            padding: 15px 0;
+        }
+        
+        nav ul li {
+            margin: 0 20px;
+            position: relative;
+        }
+        
+        nav ul li a {
+            color: #444;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav ul li a:hover {
+            color: #e83e8c;
+        }
+        
+        /* 轮播图样式 */
+        .hero-slider {
+            position: relative;
+            height: 500px;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+        
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+        }
+        
+        .slide.active {
+            opacity: 1;
+        }
+        
+        .slide-content {
+            max-width: 500px;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.8);
+            margin-left: 100px;
+            border-radius: 5px;
+        }
+        
+        .slide-content h2 {
+            font-size: 32px;
+            margin-bottom: 15px;
+            color: #e83e8c;
+        }
+        
+        .slide-content p {
+            margin-bottom: 20px;
+            color: #555;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background-color: #e83e8c;
+            color: white;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .btn:hover {
+            background-color: #d42a78;
+        }
+        
+        /* 分类样式 */
+        .categories {
+            padding: 40px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: 28px;
+            color: #333;
+            display: inline-block;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e83e8c;
+        }
+        
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+        
+        .category-item {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .category-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .category-item:hover img {
+            transform: scale(1.05);
+        }
+        
+        .category-name {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: 500;
+        }
+        
+        /* 产品展示样式 */
+        .featured-products {
+            padding: 40px 0;
+            background-color: #f9f9f9;
+        }
+        
+        .product-filter {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        
+        .filter-btn {
+            padding: 8px 20px;
+            margin: 0 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: #666;
+            position: relative;
+        }
+        
+        .filter-btn.active {
+            color: #e83e8c;
+            font-weight: 500;
+        }
+        
+        .filter-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #e83e8c;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+        
+        .product-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .product-image {
+            height: 250px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+        
+        .product-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #e83e8c;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        
+        .quick-view {
+            position: absolute;
+            bottom: -40px;
+            left: 0;
+            right: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            transition: bottom 0.3s;
+        }
+        
+        .product-card:hover .quick-view {
+            bottom: 0;
+        }
+        
+        .product-info {
+            padding: 15px;
+        }
+        
+        .product-name {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #444;
+        }
+        
+        .product-price {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .price {
+            font-weight: bold;
+            color: #e83e8c;
+        }
+        
+        .old-price {
+            text-decoration: line-through;
+            color: #999;
+            font-size: 14px;
+            margin-right: 5px;
+        }
+        
+        .add-to-cart {
+            background: none;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+        
+        .add-to-cart:hover {
+            color: #e83e8c;
+        }
+        
+        /* 品牌故事样式 */
+        .brand-story {
+            padding: 60px 0;
+            background-color: white;
+        }
+        
+        .story-content {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+        
+        .story-image {
+            flex: 1;
+            height: 400px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .story-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .story-text {
+            flex: 1;
+        }
+        
+        .story-text h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .story-text p {
+            margin-bottom: 15px;
+            color: #555;
+            line-height: 1.8;
+        }
+        
+        /* 页脚样式 */
+        footer {
+            background-color: #f5f5f5;
+            padding: 60px 0 20px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-column h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #333;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background-color: #e83e8c;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column ul li a {
+            color: #666;
+            transition: color 0.3s;
+        }
+        
+        .footer-column ul li a:hover {
+            color: #e83e8c;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icons a {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            background-color: #ddd;
+            border-radius: 50%;
+            color: #555;
+            transition: all 0.3s;
+        }
+        
+        .social-icons a:hover {
+            background-color: #e83e8c;
+            color: white;
+        }
+        
+        .newsletter input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 992px) {
+            .category-grid,
+            .product-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .slide-content {
+                margin-left: 50px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .category-grid,
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .header-top {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-bar {
+                margin: 15px 0;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 5px 10px;
+            }
+            
+            .story-content {
+                flex-direction: column;
+            }
+            
+            .slide-content {
+                margin: 0 auto;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .category-grid,
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-slider {
+                height: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 头部 -->
+    <header>
+        <div class="container">
+            <div class="header-top">
+                <div class="logo">FashionHeros</div>
+                <div class="search-bar">
+                    <input type="text" placeholder="搜索商品...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                <div class="header-icons">
+                    <a href="#"><i class="fas fa-user"></i></a>
+                    <a href="#"><i class="far fa-heart"></i></a>
+                    <a href="#">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="cart-count">3</span>
+                    </a>
+                </div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">首页</a></li>
+                    <li><a href="#">新品上市</a></li>
+                    <li><a href="#">上衣</a></li>
+                    <li><a href="#">裙装</a></li>
+                    <li><a href="#">裤装</a></li>
+                    <li><a href="#">外套</a></li>
+                    <li><a href="#">配件</a></li>
+                    <li><a href="#">特惠专区</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 主轮播图 -->
+    <section class="hero-slider">
+        <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1496747611176-843222e1e57c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');">
+            <div class="container">
+                <div class="slide-content">
+                    <h2>夏季新品上市</h2>
+                    <p>探索最新夏季系列，清新色彩与舒适面料完美结合</p>
+                    <a href="#" class="btn">立即选购</a>
+                </div>
+            </div>
+        </div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1534452203293-494d7ddbf7e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');">
+            <div class="container">
+                <div class="slide-content">
+                    <h2>周末特惠</h2>
+                    <p>精选商品限时7折，购物满2000免运费</p>
+                    <a href="#" class="btn">查看详情</a>
+                </div>
+            </div>
+        </div>
+        <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1525299374597-911581e1bdef?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');">
+            <div class="container">
+                <div class="slide-content">
+                    <h2>2023秋季系列</h2>
+                    <p>提前预览秋季时尚趋势，展现独特个性风格</p>
+                    <a href="#" class="btn">预览系列</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 商品分类 -->
+    <section class="categories">
+        <div class="container">
+            <div class="section-title">
+                <h2>商品分类</h2>
+            </div>
+            <div class="category-grid">
+                <div class="category-item">
+                    <img src="https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="上衣">
+                    <div class="category-name">上衣</div>
+                </div>
+                <div class="category-item">
+                    <img src="https://images.unsplash.com/photo-1595777457583-95e059d581b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="裙装">
+                    <div class="category-name">裙装</div>
+                </div>
+                <div class="category-item">
+                    <img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="裤装">
+                    <div class="category-name">裤装</div>
+                </div>
+                <div class="category-item">
+                    <img src="https://images.unsplash.com/photo-1551232864-3f0890e580d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="外套">
+                    <div class="category-name">外套</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 精选商品 -->
+    <section class="featured-products">
+        <div class="container">
+            <div class="section-title">
+                <h2>精选商品</h2>
+            </div>
+            <div class="product-filter">
+                <button class="filter-btn active">所有商品</button>
+                <button class="filter-btn">新品上市</button>
+                <button class="filter-btn">热卖商品</button>
+                <button class="filter-btn">特价优惠</button>
+            </div>
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1591369822096-ffd140ec948a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="连衣裙">
+                        <div class="product-badge">新品</div>
+                        <div class="quick-view">快速预览</div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">碎花雪纺连衣裙</h3>
+                        <div class="product-price">
+                            <div class="price">
+                                <span class="old-price">NT$1,280</span>
+                                NT$990
+                            </div>
+                            <button class="add-to-cart"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1583744946564-b52d01a7b577?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="衬衫">
+                        <div class="quick-view">快速预览</div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">宽松休闲衬衫</h3>
+                        <div class="product-price">
+                            <div class="price">NT$790</div>
+                            <button class="add-to-cart"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1554238113-9d19ac3d0a49?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="牛仔裤">
+                        <div class="product-badge">热卖</div>
+                        <div class="quick-view">快速预览</div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">高腰修身牛仔裤</h3>
+                        <div class="product-price">
+                            <div class="price">NT$1,080</div>
+                            <button class="add-to-cart"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="外套">
+                        <div class="product-badge">特价</div>
+                        <div class="quick-view">快速预览</div>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">休闲风衣外套</h3>
+                        <div class="product-price">
+                            <div class="price">
+                                <span class="old-price">NT$2,480</span>
+                                NT$1,880
+                            </div>
+                            <button class="add-to-cart"><i class="fas fa-plus"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 品牌故事 -->
+    <section class="brand-story">
+        <div class="container">
+            <div class="story-content">
+                <div class="story-image">
+                    <img src="https://images.unsplash.com/photo-1566206091558-7f218b696731?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="品牌故事">
+                </div>
+                <div class="story-text">
+                    <h2>关于 FashionHeros</h2>
+                    <p>FashionHeros 成立于2015年，致力于为现代年轻女性提供时尚、优质且价格合理的服装。我们的设计理念是让每一位女性都能通过服装展现自信与魅力。</p>
+                    <p>我们注重面料的选择与剪裁的精细，每一件商品都经过精心设计，确保舒适与时尚并存。从日常穿搭到特殊场合，FashionHeros 都能为您提供完美的服装解决方案。</p>
+                    <a href="#" class="btn">了解更多</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>客户服务</h3>
+                    <ul>
+                        <li><a href="#">购物指南</a></li>
+                        <li><a href="#">付款方式</a></li>
+                        <li><a href="#">配送说明</a></li>
+                        <li><a href="#">退换货政策</a></li>
+                        <li><a href="#">常见问题</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>关于我们</h3>
+                    <ul>
+                        <li><a href="#">品牌故事</a></li>
+                        <li><a href="#">门店信息</a></li>
+                        <li><a href="#">招聘信息</a></li>
+                        <li><a href="#">隐私政策</a></li>
+                        <li><a href="#">服务条款</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>联系我们</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> 客服专线：0800-123-456</li>
+                        <li><i class="fas fa-envelope"></i> 客服邮箱：service@fashionheros.com</li>
+                        <li><i class="fas fa-clock"></i> 服务时间：周一至周五 9:00-18:00</li>
+                    </ul>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-line"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>订阅电子报</h3>
+                    <p>订阅我们的电子报，获取最新商品信息和独家优惠</p>
+                    <div class="newsletter">
+                        <input type="email" placeholder="请输入您的Email">
+                        <button class="btn">订阅</button>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2023 FashionHeros All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 轮播图功能
+        document.addEventListener('DOMContentLoaded', function() {
+            let currentSlide = 0;
+            const slides = document.querySelectorAll('.slide');
+            
+            function showSlide(n) {
+                slides.forEach(slide => slide.classList.remove('active'));
+                currentSlide = (n + slides.length) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }
+            
+            // 自动轮播
+            setInterval(() => {
+                showSlide(currentSlide + 1);
+            }, 5000);
+            
+            // 分类悬停效果
+            const categoryItems = document.querySelectorAll('.category-item');
+            categoryItems.forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.querySelector('img').style.transform = 'scale(1.05)';
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    this.querySelector('img').style.transform = 'scale(1)';
+                });
+            });
+            
+            // 产品筛选
+            const filterBtns = document.querySelectorAll('.filter-btn');
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    // 这里可以添加实际筛选产品的逻辑
+                });
+            });
+            
+            // 添加到购物车动画
+            const addToCartBtns = document.querySelectorAll('.add-to-cart');
+            addToCartBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const cartCount = document.querySelector('.cart-count');
+                    cartCount.textContent = parseInt(cartCount.textContent) + 1;
+                    
+                    // 这里可以添加添加到购物车的实际逻辑
+                    alert('商品已添加到购物车！');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
