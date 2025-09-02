@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STELLA Fashion - 年輕女性時尚精品</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            overflow-x: hidden;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: #ff6b6b;
+            transform: translateY(-2px);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 50%;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .cart-icon {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .cart-icon:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #fff;
+            color: #ff6b6b;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            z-index: 2;
+            max-width: 600px;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .cta-button:hover {
+            background: white;
+            color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .floating-element {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            top: 20%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            bottom: 20%;
+            left: 20%;
+            animation-delay: 4s;
+        }
+
+        .products-section {
+            padding: 100px 20px;
+            background: white;
+            position: relative;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #333;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+            border-radius: 2px;
+        }
+
+        .filter-tabs {
+            display: flex;
+            justify-content: center;
+            margin: 50px 0;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .filter-tab {
+            background: #f8f9fa;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .filter-tab.active,
+        .filter-tab:hover {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(135deg, #ffeaa7, #fab1a0);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image::before {
+            content: '👗';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 4em;
+            opacity: 0.7;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .product-price {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #ff6b6b;
+            margin-bottom: 15px;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .sale-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #ff4757;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            z-index: 10;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            animation: scaleIn 0.3s ease;
+        }
+
+        .modal h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .modal p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .close-modal {
+            background: #f8f9fa;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-right: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .continue-shopping {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(180deg);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5em;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 20px;
+            }
+            
+            .filter-tabs {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">STELLA Fashion</div>
+            <ul class="nav-links">
+                <li><a href="#home">首頁</a></li>
+                <li><a href="#products">商品</a></li>
+                <li><a href="#about">關於我們</a></li>
+                <li><a href="#contact">聯絡我們</a></li>
+            </ul>
+            <button class="cart-icon" onclick="showCart()">
+                購物車 <span class="cart-count">0</span>
+            </button>
+        </nav>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="floating-elements">
+            <div class="floating-element">✨</div>
+            <div class="floating-element">💄</div>
+            <div class="floating-element">👜</div>
+        </div>
+        <div class="hero-content">
+            <h1>時尚無界限</h1>
+            <p>發現屬於妳的獨特風格，展現年輕女性的自信魅力</p>
+            <button class="cta-button" onclick="scrollToProducts()">開始購物</button>
+        </div>
+    </section>
+
+    <section class="products-section" id="products">
+        <div class="container">
+            <h2 class="section-title">精選商品</h2>
+            
+            <div class="filter-tabs">
+                <button class="filter-tab active" onclick="filterProducts('all')">全部</button>
+                <button class="filter-tab" onclick="filterProducts('dress')">洋裝</button>
+                <button class="filter-tab" onclick="filterProducts('top')">上衣</button>
+                <button class="filter-tab" onclick="filterProducts('bottom')">下裝</button>
+                <button class="filter-tab" onclick="filterProducts('accessory')">配件</button>
+            </div>
+
+            <div class="products-grid" id="productsGrid">
+                <!-- 商品卡片將由JavaScript動態生成 -->
+            </div>
+        </div>
+    </section>
+
+    <!-- 購物車模態框 -->
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <h2>購物車</h2>
+            <p id="cartMessage">您的購物車是空的</p>
+            <button class="close-modal" onclick="closeModal()">關閉</button>
+            <button class="continue-shopping" onclick="closeModal()">繼續購物</button>
+        </div>
+    </div>
+
+    <!-- 添加商品成功模態框 -->
+    <div class="modal" id="successModal">
+        <div class="modal-content">
+            <h2>🎉 添加成功！</h2>
+            <p>商品已成功加入購物車</p>
+            <button class="close-modal" onclick="closeSuccessModal()">關閉</button>
+            <button class="continue-shopping" onclick="closeSuccessModal()">繼續購物</button>
+        </div>
+    </div>
+
+    <script>
+        // 商品數據
+        const products = [
+            {
+                id: 1,
+                name: "優雅花卉連身裙",
+                price: "NT$ 1,299",
+                category: "dress",
+                sale: true,
+                colors: ["#ffeaa7", "#fab1a0", "#fd79a8"]
+            },
+            {
+                id: 2,
+                name: "簡約針織上衣",
+                price: "NT$ 699",
+                category: "top",
+                sale: false,
+                colors: ["#74b9ff", "#a29bfe", "#fd79a8"]
+            },
+            {
+                id: 3,
+                name: "高腰牛仔褲",
+                price: "NT$ 899",
+                category: "bottom",
+                sale: true,
+                colors: ["#55a3ff", "#00b894", "#fdcb6e"]
+            },
+            {
+                id: 4,
+                name: "時尚手提包",
+                price: "NT$ 799",
+                category: "accessory",
+                sale: false,
+                colors: ["#e17055", "#fd79a8", "#fdcb6e"]
+            },
+            {
+                id: 5,
+                name: "蕾絲雪紡裙",
+                price: "NT$ 1,099",
+                category: "dress",
+                sale: false,
+                colors: ["#fab1a0", "#fd79a8", "#a29bfe"]
+            },
+            {
+                id: 6,
+                name: "休閒棉質T恤",
+                price: "NT$ 499",
+                category: "top",
+                sale: true,
+                colors: ["#74b9ff", "#00b894", "#ffeaa7"]
+            },
+            {
+                id: 7,
+                name: "修身短褲",
+                price: "NT$ 599",
+                category: "bottom",
+                sale: false,
+                colors: ["#55a3ff", "#fd79a8", "#fdcb6e"]
+            },
+            {
+                id: 8,
+                name: "珍珠項鍊",
+                price: "NT$ 399",
+                category: "accessory",
+                sale: true,
+                colors: ["#ddd", "#ffeaa7", "#fd79a8"]
+            }
+        ];
+
+        let cart = [];
+
+        // 渲染商品
+        function renderProducts(productsToRender = products) {
+            const grid = document.getElementById('productsGrid');
+            grid.innerHTML = '';
+
+            productsToRender.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                productCard.style.background = `linear-gradient(135deg, ${product.colors[0]}, ${product.colors[1]})`;
+                
+                productCard.innerHTML = `
+                    ${product.sale ? '<div class="sale-badge">特價</div>' : ''}
+                    <div class="product-image" style="background: linear-gradient(135deg, ${product.colors[0]}, ${product.colors[1]});">
+                        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 4em; opacity: 0.7;">
+                            ${getCategoryIcon(product.category)}
+                        </div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-price">${product.price}</div>
+                        <button class="add-to-cart" onclick="addToCart(${product.id})">
+                            加入購物車
+                        </button>
+                    </div>
+                `;
+
+                // 添加動畫延遲
+                productCard.style.animationDelay = `${productsToRender.indexOf(product) * 0.1}s`;
+                productCard.style.animation = 'fadeInUp 0.6s ease forwards';
+                
+                grid.appendChild(productCard);
+            });
+        }
+
+        // 獲取分類圖標
+        function getCategoryIcon(category) {
+            const icons = {
+                dress: '👗',
+                top: '👚',
+                bottom: '👖',
+                accessory: '👜'
+            };
+            return icons[category] || '👗';
+        }
+
+        // 過濾商品
+        function filterProducts(category) {
+            // 更新按鈕狀態
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // 過濾商品
+            const filteredProducts = category === 'all' 
+                ? products 
+                : products.filter(product => product.category === category);
+            
+            renderProducts(filteredProducts);
+        }
+
+        // 添加到購物車
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            if (product) {
+                cart.push(product);
+                updateCartCount();
+                showSuccessModal();
+            }
+        }
+
+        // 更新購物車數量
+        function updateCartCount() {
+            document.querySelector('.cart-count').textContent = cart.length;
+        }
+
+        // 顯示購物車
+        function showCart() {
+            const modal = document.getElementById('cartModal');
+            const message = document.getElementById('cartMessage');
+            
+            if (cart.length === 0) {
+                message.textContent = '您的購物車是空的';
+            } else {
+                const total = cart.length;
+                message.innerHTML = `
+                    <div style="text-align: left; margin-bottom: 20px;">
+                        ${cart.map(item => `<div style="margin-bottom: 10px; padding: 10px; background: #f8f9fa; border-radius: 8px;">${item.name} - ${item.price}</div>`).join('')}
+                    </div>
+                    <div style="font-weight: bold; font-size: 1.2em; color: #ff6b6b;">
+                        總計: ${total} 件商品
+                    </div>
+                `;
+            }
+            
+            modal.style.display = 'block';
+        }
+
+        // 顯示成功模態框
+        function showSuccessModal() {
+            document.getElementById('successModal').style.display = 'block';
+        }
+
+        // 關閉模態框
+        function closeModal() {
+            document.getElementById('cartModal').style.display = 'none';
+        }
+
+        function closeSuccessModal() {
+            document.getElementById('successModal').style.display = 'none';
+        }
+
+        // 滾動到商品區域
+        function scrollToProducts() {
+            document.getElementById('products').scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+
+        // 點擊模態框外部關閉
+        window.onclick = function(event) {
+            const cartModal = document.getElementById('cartModal');
+            const successModal = document.getElementById('successModal');
+            
+            if (event.target === cartModal) {
+                closeModal();
+            }
+            if (event.target === successModal) {
+                closeSuccessModal();
+            }
+        }
+
+        // 頁面載入時渲染商品
+        document.addEventListener('DOMContentLoaded', function() {
+            renderProducts();
+            
+            // 添加滾動效果
+            window.addEventListener('scroll', function() {
+                const header = document.querySelector('.header');
+                if (window.scrollY > 100) {
+                    header.style.background = 'rgba(255, 255, 255, 0.98)';
+                    header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.1)';
+                } else {
+                    header.style.background = 'rgba(255, 255, 255, 0.95)';
+                    header.style.boxShadow = 'none';
+                }
+            });
+        });
+
+        // 添加商品卡片點擊動畫
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('add-to-cart')) {
+                const button = e.target;
+                button.innerHTML = '已添加! ✓';
+                button.style.background = '#00b894';
+                
+                setTimeout(() => {
+                    button.innerHTML = '加入購物車';
+                    button.style.background = 'linear-gradient(45deg, #ff6b6b, #ff8e53)';
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>
